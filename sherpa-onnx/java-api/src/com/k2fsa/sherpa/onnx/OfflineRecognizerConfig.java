@@ -5,6 +5,8 @@ package com.k2fsa.sherpa.onnx;
 public class OfflineRecognizerConfig {
     private final FeatureConfig featConfig;
     private final OfflineModelConfig modelConfig;
+
+    private final OfflineCtcFstDecoderConfig ctcFstDecoderConfig;
     private final HomophoneReplacerConfig hr;
     private final String decodingMethod;
     private final int maxActivePaths;
@@ -17,6 +19,8 @@ public class OfflineRecognizerConfig {
     private OfflineRecognizerConfig(Builder builder) {
         this.featConfig = builder.featConfig;
         this.modelConfig = builder.modelConfig;
+
+        this.ctcFstDecoderConfig = builder.ctcFstDecoderConfig;
         this.hr = builder.hr;
         this.decodingMethod = builder.decodingMethod;
         this.maxActivePaths = builder.maxActivePaths;
@@ -25,6 +29,7 @@ public class OfflineRecognizerConfig {
         this.ruleFsts = builder.ruleFsts;
         this.ruleFars = builder.ruleFars;
         this.blankPenalty = builder.blankPenalty;
+
     }
 
     public static Builder builder() {
@@ -38,6 +43,8 @@ public class OfflineRecognizerConfig {
     public static class Builder {
         private FeatureConfig featConfig = FeatureConfig.builder().build();
         private OfflineModelConfig modelConfig = OfflineModelConfig.builder().build();
+
+        private OfflineCtcFstDecoderConfig ctcFstDecoderConfig = OfflineCtcFstDecoderConfig.builder().build();
         private HomophoneReplacerConfig hr = HomophoneReplacerConfig.builder().build();
         private String decodingMethod = "greedy_search";
         private int maxActivePaths = 4;
@@ -63,6 +70,11 @@ public class OfflineRecognizerConfig {
 
         public Builder setHr(HomophoneReplacerConfig hr) {
             this.hr = hr;
+            return this;
+        }
+
+        public Builder setCtcFstDecoderConfig(OfflineCtcFstDecoderConfig ctcFstDecoderConfig) {
+            this.ctcFstDecoderConfig = ctcFstDecoderConfig;
             return this;
         }
 

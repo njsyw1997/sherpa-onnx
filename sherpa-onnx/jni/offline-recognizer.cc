@@ -336,6 +336,21 @@ static OfflineRecognizerConfig GetOfflineConfig(JNIEnv *env, jobject config) {
   ans.model_config.telespeech_ctc = p;
   env->ReleaseStringUTFChars(s, p);
 
+  // OfflineCtcFstDecoderConfig
+  fid = env->GetFieldID(cls, "ctcFstDecoderConfig",
+                        "Lcom/k2fsa/sherpa/onnx/OfflineCtcFstDecoderConfig;");
+  jobject ctc_fst_decoder_config = env->GetObjectField(config, fid);
+  jclass ctc_fst_decoder_config_cls = env->GetObjectClass(ctc_fst_decoder_config);
+
+  fid = env->GetFieldID(ctc_fst_decoder_config_cls, "graph", "Ljava/lang/String;");
+  s = (jstring)env->GetObjectField(ctc_fst_decoder_config, fid);
+  p = env->GetStringUTFChars(s, nullptr);
+  ans.ctc_fst_decoder_config.graph = p;
+  env->ReleaseStringUTFChars(s, p);
+
+  fid = env->GetFieldID(ctc_fst_decoder_config_cls, "maxActive", "I");
+  ans.ctc_fst_decoder_config.max_active = env->GetIntField(ctc_fst_decoder_config, fid);
+
   // homophone replacer config
   fid = env->GetFieldID(cls, "hr",
                         "Lcom/k2fsa/sherpa/onnx/HomophoneReplacerConfig;");
