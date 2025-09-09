@@ -118,6 +118,7 @@ def get_piper_models() -> List[TtsModel]:
         TtsModel(model_dir="vits-piper-de_DE-eva_k-x_low"),
         TtsModel(model_dir="vits-piper-de_DE-karlsson-low"),
         TtsModel(model_dir="vits-piper-de_DE-kerstin-low"),
+        TtsModel(model_dir="vits-piper-de_DE-dii-high"),
         TtsModel(model_dir="vits-piper-de_DE-miro-high"),
         #  TtsModel(model_dir="vits-piper-de_DE-mls-medium"),
         TtsModel(model_dir="vits-piper-de_DE-pavoque-low"),
@@ -520,6 +521,11 @@ def get_kitten_models() -> List[TtsModel]:
         ),
         TtsModel(
             model_dir="kitten-nano-en-v0_2-fp16",
+            model_name="model.fp16.onnx",
+            lang="en",
+        ),
+        TtsModel(
+            model_dir="kitten-mini-en-v0_1-fp16",
             model_name="model.fp16.onnx",
             lang="en",
         ),

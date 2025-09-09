@@ -182,6 +182,11 @@ type
     function ToString: AnsiString;
   end;
 
+  TSherpaOnnxOnlineToneCtcModelConfig = record
+    Model: AnsiString;
+    function ToString: AnsiString;
+  end;
+
   TSherpaOnnxOnlineModelConfig = record
     Transducer: TSherpaOnnxOnlineTransducerModelConfig;
     Paraformer: TSherpaOnnxOnlineParaformerModelConfig;
@@ -196,6 +201,7 @@ type
     TokensBuf: AnsiString;
     TokensBufSize: Integer;
     NemoCtc: TSherpaOnnxOnlineNemoCtcModelConfig;
+    ToneCtc: TSherpaOnnxOnlineToneCtcModelConfig;
     function ToString: AnsiString;
     class operator Initialize({$IFDEF FPC}var{$ELSE}out{$ENDIF} Dest: TSherpaOnnxOnlineModelConfig);
   end;
@@ -663,6 +669,7 @@ const
      {$linklib sherpa-onnx-kaldifst-core}
      {$linklib sherpa-onnx-fstfar}
      {$linklib sherpa-onnx-fst}
+     {$linklib cppinyin_core}
      {$linklib kissfft-float}
      {$linklib kaldi-native-fbank-core}
      {$linklib piper_phonemize}
@@ -713,6 +720,10 @@ type
     Model: PAnsiChar;
   end;
 
+  SherpaOnnxOnlineToneCtcModelConfig = record
+    Model: PAnsiChar;
+  end;
+
   SherpaOnnxOnlineModelConfig= record
     Transducer: SherpaOnnxOnlineTransducerModelConfig;
     Paraformer: SherpaOnnxOnlineParaformerModelConfig;
@@ -727,6 +738,7 @@ type
     TokensBuf: PAnsiChar;
     TokensBufSize: cint32;
     NemoCtc: SherpaOnnxOnlineNemoCtcModelConfig;
+    ToneCtc: SherpaOnnxOnlineToneCtcModelConfig;
   end;
   SherpaOnnxFeatureConfig = record
     SampleRate: cint32;
@@ -1349,6 +1361,12 @@ begin
   [Self.Model]);
 end;
 
+function TSherpaOnnxOnlineToneCtcModelConfig.ToString: AnsiString;
+begin
+  Result := Format('TSherpaOnnxOnlineToneCtcModelConfig(Model := %s)',
+  [Self.Model]);
+end;
+
 function TSherpaOnnxOnlineModelConfig.ToString: AnsiString;
 begin
   Result := Format('TSherpaOnnxOnlineModelConfig(Transducer := %s, ' +
@@ -1361,12 +1379,13 @@ begin
     'ModelType := %s, ' +
     'ModelingUnit := %s, ' +
     'BpeVocab := %s, ' +
-    'NemoCtc := %s)',
+    'NemoCtc := %s, ' +
+    'ToneCtc := %s)',
   [Self.Transducer.ToString, Self.Paraformer.ToString,
    Self.Zipformer2Ctc.ToString, Self.Tokens,
    Self.NumThreads, Self.Provider, Self.Debug.ToString,
    Self.ModelType, Self.ModelingUnit, Self.BpeVocab,
-   Self.NemoCtc.ToString
+   Self.NemoCtc.ToString, Self.ToneCtc.ToString
   ]);
 end;
 
@@ -1466,6 +1485,7 @@ begin
 
   C.ModelConfig.Zipformer2Ctc.Model := PAnsiChar(Config.ModelConfig.Zipformer2Ctc.Model);
   C.ModelConfig.NemoCtc.Model := PAnsiChar(Config.ModelConfig.NemoCtc.Model);
+  C.ModelConfig.ToneCtc.Model := PAnsiChar(Config.ModelConfig.ToneCtc.Model);
 
   C.ModelConfig.Tokens := PAnsiChar(Config.ModelConfig.Tokens);
   C.ModelConfig.NumThreads := Config.ModelConfig.NumThreads;
